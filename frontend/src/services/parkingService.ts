@@ -2,25 +2,26 @@ import type { Slot, Vehicle, DashboardStats, ActivityItem, EntryData, HistoryRes
 
 const SLOTS_KEY = 'parkwise_slots';
 const VEHICLES_KEY = 'parkwise_vehicles';
-const API_BASE = (import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || 'https://parkwise-fullstack.onrender.com/api').replace(/\/$/, '');
+const API_BASE = (typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+  ? 'https://parkwise-fullstack.onrender.com/api'
+  : 'http://localhost:5000/api').replace(/\/$/, '');
 
 const requestJson = async <T>(url: string, init?: RequestInit): Promise<T> => {
   const response = await fetch(url, init);
-  const result = await response.json();
+  const contentType = response.headers.get('content-type') || '';
+  const isJson = contentType.includes('application/json');
+  const result = isJson ? await response.json() : await response.text();
+
   if (!response.ok) {
-    throw new Error(result.message || result.error || 'Request failed');
+    const message = typeof result === 'string' ? result : result.message || result.error || 'Request failed';
+    throw new Error(message);
   }
+
+  if (!isJson) {
+    throw new Error('Unexpected response from backend');
+  }
+
   return result as T;
-};
-
-const DEFAULT_SLOT_NUMBERS = [
-  'A01', 'A02', 'A03', 'A04', 'A05', 'A06', 'A07', 'A08', 'A09',
-  'B01', 'B02', 'B03', 'B04', 'B05', 'B06', 'B07', 'B08', 'B09',
-  'C01', 'C02', 'C03', 'C04', 'C05', 'C06', 'C07', 'C08', 'C09',
-];
-
-const generateId = (): string => {
-  return Date.now().toString(36) + Math.random().toString(36).substring(2);
 };
 
 const syncEntryToBackend = async (data: EntryData) => {

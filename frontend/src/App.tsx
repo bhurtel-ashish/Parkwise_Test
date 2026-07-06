@@ -84,10 +84,10 @@ const AppLayout = () => {
         </main>
       </div>
       <ToastContainer />
-      {exitConfirmation.isOpen && (
+      {exitConfirmation.isOpen && exitConfirmation.vehicle && (
         <ExitConfirmation
           vehicle={exitConfirmation.vehicle}
-          onClose={closeExitConfirmation}
+          onCancel={closeExitConfirmation}
           onConfirm={handleConfirmExit}
         />
       )}

@@ -126,7 +126,9 @@ export const ParkingProvider = ({ children }: { children: ReactNode }) => {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    const socketUrl = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_API_URL || 'https://parkwise-fullstack.onrender.com';
+    const socketUrl = typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+      ? 'https://parkwise-fullstack.onrender.com'
+      : 'http://localhost:5000';
     const socket = io(socketUrl, {
       transports: ['websocket', 'polling'],
       withCredentials: true,
@@ -262,6 +264,8 @@ export const ParkingProvider = ({ children }: { children: ReactNode }) => {
     navigateToEntry,
     addVehicle, exitVehicle, exitBySlot,
     refreshData,
+    backendAvailable,
+    backendMessage,
     toasts, showToast, removeToast,
     getHistory, searchVehicles,
     exitConfirmation,
