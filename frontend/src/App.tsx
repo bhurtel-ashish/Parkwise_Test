@@ -1,13 +1,13 @@
-import { ParkingProvider, useParking } from '../../src/context/ParkingContext';
-import Sidebar from '../../src/components/Sidebar';
-import Navbar from '../../src/components/Navbar';
-import Dashboard from '../../src/components/Dashboard';
-import VehicleEntry from '../../src/components/VehicleEntry';
-import VehicleExit from '../../src/components/VehicleExit';
-import SlotMap from '../../src/components/SlotMap';
-import ParkingHistory from '../../src/components/ParkingHistory';
-import ToastContainer from '../../src/components/Toast';
-import ExitConfirmation from '../../src/components/ExitConfirmation';
+import { ParkingProvider, useParking } from './context/ParkingContext';
+import Sidebar from './components/Sidebar';
+import Navbar from './components/Navbar';
+import Dashboard from './components/Dashboard';
+import VehicleEntry from './components/VehicleEntry';
+import VehicleExit from './components/VehicleExit';
+import SlotMap from './components/SlotMap';
+import ParkingHistory from './components/ParkingHistory';
+import ToastContainer from './components/Toast';
+import ExitConfirmation from './components/ExitConfirmation';
 
 const PageRenderer = () => {
   const { currentPage } = useParking();
