@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://parkwise_admin:Demo123456@cluster0.owdz7ng.mongodb.net/?appName=Cluster0/parkwise';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://parkwise_admin:Demo123456@cluster0.owdz7ng.mongodb.net/ParkWise_data?appName=Cluster0';
 
 const connectDatabase = async () => {
   try {

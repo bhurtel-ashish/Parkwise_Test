@@ -16,7 +16,7 @@
 const mongoose = require('mongoose');
 
 // MongoDB connection URI from environment
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/parkwise';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/ParkWise_data';
 
 // ============================================
 // Mongoose Models
