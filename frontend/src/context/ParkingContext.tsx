@@ -29,6 +29,8 @@ interface ParkingContextType {
   exitVehicle: (vehicleNumber: string) => { success: boolean; message: string };
   exitBySlot: (slotNumber: string) => { success: boolean; message: string };
   refreshData: () => void;
+  backendAvailable: boolean;
+  backendMessage: string | null;
   toasts: Toast[];
   showToast: (message: string, type: ToastType) => void;
   removeToast: (id: string) => void;
@@ -67,6 +69,8 @@ export const ParkingProvider = ({ children }: { children: ReactNode }) => {
     return saved === 'true';
   });
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [backendAvailable, setBackendAvailable] = useState(true);
+  const [backendMessage, setBackendMessage] = useState<string | null>(null);
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [preselectedSlot, setPreselectedSlot] = useState<string | null>(null);
   const [exitConfirmation, setExitConfirmation] = useState<ExitConfirmationState>({
@@ -93,11 +97,15 @@ export const ParkingProvider = ({ children }: { children: ReactNode }) => {
       setSlots(slotsData);
       setVehicles(vehiclesData);
       setDashboardStats(statsData);
+      setBackendAvailable(true);
+      setBackendMessage(null);
     } catch (error) {
       console.error('ParkWise: failed to refresh data from backend', error);
       setSlots(parkingService.getSlots());
       setVehicles(parkingService.getVehicles());
       setDashboardStats(parkingService.getDashboardStats());
+      setBackendAvailable(false);
+      setBackendMessage('Backend unavailable. Showing cached data until the connection is restored.');
     }
   }, []);
 
@@ -118,7 +126,8 @@ export const ParkingProvider = ({ children }: { children: ReactNode }) => {
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
-    const socket = io(import.meta.env.VITE_SOCKET_URL || `http://${window.location.hostname}:5000`, {
+    const socketUrl = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_API_URL || 'https://parkwise-fullstack.onrender.com';
+    const socket = io(socketUrl, {
       transports: ['websocket', 'polling'],
       withCredentials: true,
     });

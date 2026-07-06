@@ -29,7 +29,16 @@ const PageRenderer = () => {
 };
 
 const AppLayout = () => {
-  const { sidebarCollapsed, exitConfirmation, closeExitConfirmation, exitVehicle, exitBySlot, showToast } = useParking();
+  const {
+    sidebarCollapsed,
+    exitConfirmation,
+    closeExitConfirmation,
+    exitVehicle,
+    exitBySlot,
+    showToast,
+    backendAvailable,
+    backendMessage,
+  } = useParking();
 
   const handleConfirmExit = async (): Promise<boolean> => {
     if (!exitConfirmation.vehicle || !exitConfirmation.identifier) return false;
@@ -55,6 +64,21 @@ const AppLayout = () => {
       <Sidebar />
       <div className={`app-main ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
         <Navbar />
+        {!backendAvailable && backendMessage && (
+          <div
+            role="status"
+            style={{
+              margin: '12px 16px 0',
+              padding: '10px 12px',
+              borderRadius: '8px',
+              backgroundColor: '#fff3cd',
+              color: '#856404',
+              border: '1px solid #ffeeba',
+            }}
+          >
+            {backendMessage}
+          </div>
+        )}
         <main className="main-content" role="main">
           <PageRenderer />
         </main>

@@ -2,7 +2,7 @@ import type { Slot, Vehicle, DashboardStats, ActivityItem, EntryData, HistoryRes
 
 const SLOTS_KEY = 'parkwise_slots';
 const VEHICLES_KEY = 'parkwise_vehicles';
-const API_BASE = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, '');
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || 'https://parkwise-fullstack.onrender.com/api').replace(/\/$/, '');
 
 const requestJson = async <T>(url: string, init?: RequestInit): Promise<T> => {
   const response = await fetch(url, init);
